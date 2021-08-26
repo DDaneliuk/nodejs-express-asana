@@ -12,7 +12,15 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // set up cors policy
 app.use(cors())
-let whitelist = ['https://tilda.cc','https://eur1.com.ua/', 'https://undercust.com/'] 
+let whitelist = [
+    'https://tilda.cc',
+    'https://forms.tildacdn.com',
+    'https://stat.tildacdn.com',
+    'https://tilda.cc',
+    'https://tilda.cc',
+    'https://eur1.com.ua/', 
+    'https://undercust.com/'
+] 
 let corsOptions = {
     origin: function (origin, callback){
         console.log("CALLBACK ORIGIN: ", origin)
