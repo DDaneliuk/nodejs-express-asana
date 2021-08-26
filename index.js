@@ -15,7 +15,7 @@ app.use(cors())
 let whitelist = ['https://tilda.cc','https://eur1.com.ua/', 'https://undercust.com/'] 
 let corsOptions = {
     origin: function (origin, callback){
-        console.log("CALBACK ORIGIN: ", origin)
+        console.log("CALLBACK ORIGIN: ", origin)
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
@@ -33,7 +33,7 @@ let month = (("0"+(1+date.getMonth())).slice(-2))
 let year = date.getFullYear()
 let reqTime = `${year}-${month}-${day}` 
 
-app.use('/api', router.post("/create", cors(corsOptions), async (req, res) => {
+app.use('/api', router.post("/create", /*cors(corsOptions),*/ async (req, res) => {
     const { name, phone, host, formid } = req.body;
     task_note = {
         name: name,
