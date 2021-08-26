@@ -33,7 +33,7 @@ let month = (("0"+(1+date.getMonth())).slice(-2))
 let year = date.getFullYear()
 let reqTime = `${year}-${month}-${day}` 
 
-app.use('/api', router.post("/create", /*cors(corsOptions),*/ async (req, res) => {
+app.use('/api', router.post("/create", cors(corsOptions), async (req, res) => {
     const { name, phone, host, formid } = req.body;
     task_note = {
         name: name,
