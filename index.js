@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // set up cors policy
 app.use(cors())
-let whitelist = ['https://eur1.com.ua/', 'https://undercust.com/'] 
+let whitelist = ['https://tilda.cc','https://eur1.com.ua/', 'https://undercust.com/'] 
 let corsOptions = {
     origin: function (origin, callback){
         if (whitelist.indexOf(origin) !== -1) {
