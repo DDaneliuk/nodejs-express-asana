@@ -6,7 +6,6 @@ const cors = require("cors");
 
 const app = express();
 const router = express.Router();
-const host = "127.0.0.1";
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -63,7 +62,6 @@ function createTask(task_note){
 }
 
 
-app.listen(port, host, () => {
-    console.log(`App started on port http://${host}:${port}
-Press Ctrl + C for stop server`);
+app.listen(port, () => {
+    console.log(`App started Press Ctrl + C for stop server`);
 })
