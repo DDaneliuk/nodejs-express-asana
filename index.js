@@ -15,6 +15,7 @@ app.use(cors())
 let whitelist = ['https://tilda.cc','https://eur1.com.ua/', 'https://undercust.com/'] 
 let corsOptions = {
     origin: function (origin, callback){
+        console.log("CALBACK ORIGIN: ", origin)
         if (whitelist.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
