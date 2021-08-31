@@ -42,28 +42,73 @@ let year = date.getFullYear()
 let reqTime = `${year}-${month}-${day}` 
 
 app.use('/api', router.post("/create", /*cors(corsOptions),*/ async (req, res) => {
-    const { name, phone, host, formid } = req.body;
-    task_note = {
+    const { name, phone, source, formid } = req.body;
+    info_note = {
         name: name,
         phone: phone,
-        host: host,
+        host: source,
         blockId: formid
     };
-    createTask(task_note)
+    task_note = `Ім'я: ${info_note.name}\nТелефон: ${info_note.phone}\nHost: ${info_note.host}\nBlockID: ${info_note.blockId}`;
+    createTask(info_note, task_note)
     res.status(200).json({msg: "OK"})
 }));
 
-function createTask(task_note){
+app.use('/api', router.post("/create-calc", async (req, res) => {
+    const { auto_made, auto_model, auto_year, engine, engine_size, kVt, auto_type, phone, source, formid } = req.body;
+    info_note = {
+        auto_made: auto_made,
+        auto_model: auto_model,
+        auto_year: auto_year,
+        engine : engine,
+        engine_size: engine_size,
+        kVt: kVt,
+        auto_type: auto_type,
+        phone: phone,
+        host: source,
+        blockId: formid,
+        taskCalc: "true",
+    };
+    task_note = 
+    `Номер телефону: ${info_note.phone}
+    Марка: ${info_note.auto_made}
+    Модель: ${info_note.auto_model}
+    Рік авто: ${info_note.auto_year}
+    Тип палива: ${info_note.engine}
+    Обєм Двигуна: ${info_note.engine_size}
+    Кількість кіловат: ${info_note.kVt}
+    Тип кузова: ${info_note.auto_type}
+    Host: ${info_note.host}
+    BlockID: ${info_note.blockId}`;
+    createTask(info_note, task_note)
+    res.status(200).json({msg: "OK"})
+}))
+
+function createTask(info_note, task_note){
     try{
-        client.tasks.createTask({
-            workspace: process.env.ASANA_WORKSPACE,
-            projects: [config.asana.projects],
-            assignee: config.asana.assignee,  
-            section: config.asana.section,  
-            name: `${config.asana.head} ${task_note.name}`, 
-            due_on: reqTime,  
-            notes: `Ім'я: ${task_note.name}\nТелефон: ${task_note.phone}\nHost: ${task_note.host}\nBlockID: ${task_note.blockId}`})
-            .catch(err => console.log("error on creating task in asana, err: ", err));
+        if(info_note.host == "eur1"){
+            client.tasks.createTask({
+                workspace: process.env.ASANA_WORKSPACE,
+                projects: [config.asana.projects],
+                assignee: config.asana.assignee,  
+                section: config.asana.section,  
+                name: `${config.asana.head} ${info_note.name}`, 
+                due_on: reqTime,  
+                notes: task_note})
+                .catch(err => console.log("error on creating task in asana, err: ", err));
+        }
+        else if(info_note.host == "undercust"){
+            client.tasks.createTask({
+                workspace: process.env.ASANA_WORKSPACE,
+                projects: [config.asanaCust.projects],
+                assignee: config.asanaCust.assignee,  
+                assignee_section: `${(info_note.taskCalc) ? config.asanaCust.sectionCalc : config.asanaCust.section}`,
+                name: `${config.asanaCust.head} ${(info_note.taskCalc) ? info_note.auto_made : info_note.name}`, 
+                due_on: reqTime,  
+                notes: task_note})
+                .catch(err => console.log("error on creating task in asana, err: ", err));
+        }
+        
     }
     catch (err) { 
         console.log(err);
