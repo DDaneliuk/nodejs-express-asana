@@ -36,7 +36,7 @@ const client = asana.Client.create().useAccessToken(config.asana.token)
 
 let task_note;
 let date = new Date();
-let day = date.getDate()
+let day = (("0"+(date.getDate())).slice(-2))
 let month = (("0"+(1+date.getMonth())).slice(-2))
 let year = date.getFullYear()
 let reqTime = `${year}-${month}-${day}` 
@@ -91,11 +91,11 @@ function createTask(info_note, task_note){
                 workspace: process.env.ASANA_WORKSPACE,
                 projects: [config.asana.projects],
                 assignee: config.asana.assignee,  
-                section: config.asana.section,  
+                assignee_section: config.asana.section,  
                 name: `${config.asana.head} ${info_note.name}`, 
                 due_on: reqTime,  
                 notes: task_note})
-                .catch(err => console.log("error on creating task in asana, err: ", err));
+                .catch(err => console.log("error on creating task in asana, err: ", err.value));
         }
         else if(info_note.host == "undercust"){
             client.tasks.createTask({
@@ -106,12 +106,12 @@ function createTask(info_note, task_note){
                 name: `${config.asanaCust.head} ${(info_note.taskCalc) ? info_note.auto_made : info_note.name}`, 
                 due_on: reqTime,  
                 notes: task_note})
-                .catch(err => console.log("error on creating task in asana, err: ", err));
+                .catch(err => console.log("error on creating task in asana, err: ", err.value));
         }
         
     }
     catch (err) { 
-        console.log(err);
+        console.log(err.value);
     }
 }
 
